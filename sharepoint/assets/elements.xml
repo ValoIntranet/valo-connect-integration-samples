@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+    <CustomAction
+        Title="ConnectMeXero"
+        Location="ClientSideExtension.ApplicationCustomizer"
+        ClientSideComponentId="1d55c927-1023-458c-bb0f-d7d0407ac6be"
+        ClientSideComponentProperties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
+    </CustomAction>
+</Elements>
