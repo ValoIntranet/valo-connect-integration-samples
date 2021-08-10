@@ -1,12 +1,15 @@
 declare interface IConnectMeXeroApplicationCustomizerStrings {
-  ConnectMeXeroWidgetTitle: string;
-  ConnectMeXeroWidgetDescription: string;
+  ConnectMeXeroPayslipWidgetTitle: string;
+  ConnectMeXeroPayslipWidgetDescription: string;
   WidgetSizeSingleColumn: string;
   WidgetSizeTwoColumns: string;
   WidgetSizeThreeColumns: string;
   ConnectWidgetSize: string;
   AuthenticationUrl: string;
   XeroClientId: string;
+  SignInToViewYourPayslip: string;
+  SignInToXero: string;
+  ViewYourPayslip: string;
 }
 
 declare module 'ConnectMeXeroApplicationCustomizerStrings' {

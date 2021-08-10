@@ -1,0 +1,27 @@
+.xeroPayslip{
+
+    border: 1px solid "[theme: neutralDark]";
+    padding: 0.2rem;
+    margin-right: 3%;
+
+    .xeroPayslipInformation, .xeroEarningsDeductions, .xeroLeaveAccruals, .xeroSuperannuation, .xeroTaxation {
+        display: block;
+    }
+    .xeroPayslipSection {
+        border-bottom: 1px solid "[theme: neutralDark]";
+        min-height: 1rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    
+    :global(.ui-text) {
+        color: "[theme: neutralDark]";
+    }
+
+    &.blur {
+        filter: blur(5px);
+    }
+
+}

@@ -12,14 +12,7 @@ import { ConnectMeXeroConfiguration } from './components/ConnectMeXeroConfigurat
 
 const LOG_SOURCE: string = 'ConnectMeXeroApplicationCustomizer';
 
-/**
- * If your command set uses the ClientSideComponentProperties JSON input,
- * it will be deserialized into the BaseExtension.properties object.
- * You can define an interface to describe it.
- */
 export interface IConnectMeXeroApplicationCustomizerProperties {
-  // This is an example; replace with your own property
-  testMessage: string;
 }
 
 /** A Custom Action which can be run during execution of a Client Side Application */
@@ -31,15 +24,15 @@ export default class ConnectMeXeroApplicationCustomizer
     const connectWidgetService = ConnectWidgetService.getInstance();
 
     connectWidgetService.registerWidget({
-        title: strings.ConnectMeXeroWidgetTitle,
+        title: strings.ConnectMeXeroPayslipWidgetTitle,
         id: 'valo-connect-me-xero',
         size: ConnectWidgetSize.Single,
-        description: strings.ConnectMeXeroWidgetDescription,
+        description: strings.ConnectMeXeroPayslipWidgetDescription,
         widgetComponentsFactory: (config: IConnectMeXeroConfig) => [
             {
                 id: 'valo-connect-xero-1',
                 title: 'Tab 1',
-                content: <ConnectMeXero widgetConfig={config} />
+                content: <ConnectMeXero widgetConfig={config} httpClient={this.context.httpClient} />
             }
         ],
         widgetConfigComponentFactory: (currentConfig: IConnectMeXeroConfig, onConfigUpdated: (config: IConnectMeXeroConfig) => void) => {

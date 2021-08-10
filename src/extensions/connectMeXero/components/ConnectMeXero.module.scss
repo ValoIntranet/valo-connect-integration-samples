@@ -1,3 +1,53 @@
 .xero {
-    display: block;
+    .signInContainer, .refreshXeroContainer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding-bottom: 4rem;
+    }
+
+    .signInMessage, .refreshXeroMessage {
+        border: 1px solid "[theme: neutralLight]";
+        background-color: "[theme: white]";
+        padding: 0.5rem;
+        margin-bottom: 2rem;
+        max-width: 10rem;
+        margin-right: 2rem;
+        text-align: center;
+        font-size: 0.875rem;
+    }
+
+    .signInButton, .refreshButton {
+        background: "[theme: white]";
+        margin-right: 2rem;
+
+        :global(.ui-button) {
+            height: 2.6rem;
+        }
+
+        :global(.ui-button__content) {
+            color: "[theme: black]";
+        }
+    }
+}
+
+:global(.valo-theme-dark) {
+
+    .xero {
+        .signInMessage,  .refreshXeroMessage {
+            border-color: "[theme: neutralLight]";
+            background-color: "[theme: themeLight]";
+            color: "[theme: black]";
+        }
+    
+        .signInButton, .refreshButton {
+            background: "[theme: themeLight]";
+        }
+
+        &.payslipNotBlurred {
+            overflow-y: scroll;
+        }
+
+    }
+
 }
