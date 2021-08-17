@@ -134,9 +134,10 @@ export function ConnectMeXero(props: React.PropsWithChildren<IConnectMeXeroProps
         }
     }, [ payslip ]);
 
-    const payslipData = payslip || dummyPayslip();
+    // const payslipData = payslip || {};
 
-    const xeroLogo: string = require('./assets/connect-blue.svg');
+    const xeroConnectButton: string = require('./assets/connect-blue.svg');
+    const xeroLogo: string = require('./assets/xero-logo.png');
 
     return (<div className={`${styles.xero} ${blurPayslip ? '' : styles.payslipNotBlurred}`} ref={containerRef}>
 
@@ -144,7 +145,7 @@ export function ConnectMeXero(props: React.PropsWithChildren<IConnectMeXeroProps
 
             <Provider theme={teamsTheme}>
 
-                <ConnectMeXeroPayslip payslip={payslipData} blur={blurPayslip} />
+                {payslip && <ConnectMeXeroPayslip payslip={payslip} blur={blurPayslip} /> }
 
                 {showSignInContainer && <Flex className={styles.signInContainer} hAlign='center' column>
                         <div className={styles.signInMessage}>{strings.SignInToViewYourPayslip}</div>
@@ -153,7 +154,7 @@ export function ConnectMeXero(props: React.PropsWithChildren<IConnectMeXeroProps
                                 size='medium'
                                 onClick={authenticate} 
                                 content={<Image 
-                                        src={xeroLogo} 
+                                        src={xeroConnectButton} 
                                         width={'190'} height={'43'} />} />
                         </span>
                     </Flex>}

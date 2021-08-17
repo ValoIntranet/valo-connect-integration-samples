@@ -8,9 +8,11 @@
       "customActions": {
         "1d55c927-1023-458c-bb0f-d7d0407ac6be": {
           "location": "ClientSideExtension.ApplicationCustomizer",
-          "properties": {
-            "testMessage": "Test message"
-          }
+          "properties": {}
+        },
+        "67ec18d3-359f-4448-862a-1982292216ca": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {}
         }
       }
     },
@@ -19,9 +21,11 @@
       "customActions": {
         "1d55c927-1023-458c-bb0f-d7d0407ac6be": {
           "location": "ClientSideExtension.ApplicationCustomizer",
-          "properties": {
-            "testMessage": "Test message"
-          }
+          "properties": {}
+        },
+        "67ec18d3-359f-4448-862a-1982292216ca": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {}
         }
       }
     }

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Dropdown } from '@fluentui/react-northstar/dist/es/components/Dropdown/Dropdown';
-import styles from './ConnectMeXeroConfiguration.module.scss';
+import styles from '../extensions/connectMeXero/components/ConnectMeXeroConfiguration.module.scss';
 import { Label } from '@fluentui/react-northstar/dist/es/components/Label/Label';
 import { ConnectWidgetSize } from '@valo/extensibility/lib/models/connectWidget/ConnectWidgetInfo';
 import * as strings from 'ConnectMeXeroApplicationCustomizerStrings';

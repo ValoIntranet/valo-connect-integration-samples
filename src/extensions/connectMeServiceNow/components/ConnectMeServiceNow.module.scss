@@ -1,12 +1,12 @@
-.xero {
-    .signInContainer, .refreshXeroContainer {
+.serviceNow {
+    .signInContainer, .refreshServiceNowContainer {
         position: absolute;
         bottom: 0;
         width: 100%;
         padding-bottom: 4rem;
     }
 
-    .signInMessage, .refreshXeroMessage {
+    .signInMessage, .refreshServiceNowMessage {
         border: 1px solid "[theme: neutralLight]";
         background-color: "[theme: white]";
         padding: 0.5rem;
@@ -18,6 +18,7 @@
     }
 
     .signInButton, .refreshButton {
+        background: "[theme: white]";
         margin-right: 2rem;
 
         :global(.ui-button) {
@@ -31,14 +32,7 @@
     }
     .signInButton {
         :global(.ui-button) {
-            border-color: transparent;
             padding: 0;
-        }
-    }
-
-    .refreshButton {
-        :global(.ui-button) {
-            border-color: "[theme: neutralTertiary]";
         }
     }
 
@@ -50,16 +44,15 @@
 
 :global(.valo-theme-dark) {
 
-    .xero {
-        .signInMessage, .refreshXeroMessage {
+    .serviceNow {
+        .signInMessage,  .refreshServiceNowMessage {
             border-color: "[theme: neutralLight]";
             background-color: "[theme: themeLight]";
             color: "[theme: black]";
         }
     
         .signInButton, .refreshButton {
-            background-color: "[theme: themeLight]"!important;
-            border-radius: 4px;
+            background: "[theme: themeLight]";
         }
 
     }

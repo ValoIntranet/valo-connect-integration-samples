@@ -6,4 +6,10 @@
         ComponentId="1d55c927-1023-458c-bb0f-d7d0407ac6be"
         Properties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
     </ClientSideComponentInstance>
+    <ClientSideComponentInstance
+        Title="ConnectMeServiceNow"
+        Location="ClientSideExtension.ApplicationCustomizer"
+        ComponentId="67ec18d3-359f-4448-862a-1982292216ca"
+        Properties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
+    </ClientSideComponentInstance>
 </Elements>

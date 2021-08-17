@@ -7,12 +7,17 @@
         {
           "entrypoint": "./lib/extensions/connectMeXero/ConnectMeXeroApplicationCustomizer.js",
           "manifest": "./src/extensions/connectMeXero/ConnectMeXeroApplicationCustomizer.manifest.json"
+        },
+        {
+          "entrypoint": "./lib/extensions/connectMeServiceNow/ConnectMeServiceNowApplicationCustomizer.js",
+          "manifest": "./src/extensions/connectMeServiceNow/ConnectMeServiceNowApplicationCustomizer.manifest.json"
         }
       ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "ConnectMeXeroApplicationCustomizerStrings": "lib/extensions/connectMeXero/loc/{locale}.js"
+    "ConnectMeXeroApplicationCustomizerStrings": "lib/extensions/connectMeXero/loc/{locale}.js",
+    "ConnectMeServiceNowApplicationCustomizerStrings": "lib/extensions/connectMeServiceNow/loc/{locale}.js"
   }
 }

@@ -1,7 +1,7 @@
 import { HttpClient, HttpClientResponse } from '@microsoft/sp-http';
 import * as microsoftTeams from '@microsoft/teams-js';
 
-export interface XeroCodeResponse {
+export interface IXeroCodeResponse {
     grantType: string;
     clientId: string;
     redirectUri: string;
@@ -11,7 +11,7 @@ export interface XeroCodeResponse {
     expiresOn: string;
 }
 
-export interface XeroAccessTokenResponse {
+export interface IXeroAccessTokenResponse {
     accessToken: string;
     expiresIn: number;
     obtained: string;
@@ -45,7 +45,7 @@ export class XeroAuthenticator {
 
             authenticatePromise.then(success => {
 
-                const xeroResponse: XeroCodeResponse = JSON.parse(window.sessionStorage.getItem(`Xero:AuthCode:${this.clientId}`));
+                const xeroResponse: IXeroCodeResponse = JSON.parse(window.sessionStorage.getItem(`Xero:AuthCode:${this.clientId}`));
 
                 if (success) {
 
@@ -64,7 +64,7 @@ export class XeroAuthenticator {
                         }
                         response.json().then((json: any) => {
                             if (json['access_token']) {
-                                const xeroTokenResponse: XeroAccessTokenResponse = {
+                                const xeroTokenResponse: IXeroAccessTokenResponse = {
                                     accessToken: json['access_token'],
                                     expiresIn: json['expires_in'],
                                     obtained: new Date().toISOString(),
@@ -98,11 +98,11 @@ export class XeroAuthenticator {
         });
     }
 
-    public currentAccessToken(): XeroAccessTokenResponse | null {
+    public currentAccessToken(): IXeroAccessTokenResponse | null {
         const accessTokenString = window.sessionStorage.getItem(`Xero:AccessToken:${this.clientId}`);
         if (accessTokenString) {
             try {
-                const accessToken: XeroAccessTokenResponse = JSON.parse(accessTokenString);
+                const accessToken: IXeroAccessTokenResponse = JSON.parse(accessTokenString);
                 if (!accessToken.expiresIn || !accessToken.obtained) {
                     return null;
                 }
@@ -122,7 +122,7 @@ export class XeroAuthenticator {
 
     public authenticateNotExpired(): boolean {
         try {
-            const xeroResponse: XeroCodeResponse = JSON.parse(window.sessionStorage.getItem(`Xero:AuthCode:${this.clientId}`));
+            const xeroResponse: IXeroCodeResponse = JSON.parse(window.sessionStorage.getItem(`Xero:AuthCode:${this.clientId}`));
             if (!xeroResponse.expiresOn) {
                 return false;
             }
@@ -144,10 +144,10 @@ export class XeroAuthenticator {
                 const teamsAuthParams: microsoftTeams.authentication.AuthenticateParameters = {
                     url: this.url,
                     width: 640,
-                    height: 600,
+                    height: 800,
                     successCallback: (result: string) => {
 
-                        const xeroResponse: XeroCodeResponse = JSON.parse(result);
+                        const xeroResponse: IXeroCodeResponse = JSON.parse(result);
                         xeroResponse.expiresOn = new Date((new Date()).getTime() + (30*60*1000)).toISOString(); // current time plus 30 minutes
                         window.sessionStorage.setItem(`Xero:AuthCode:${this.clientId}`, JSON.stringify(xeroResponse));
 
@@ -164,25 +164,7 @@ export class XeroAuthenticator {
                 }
 
                 microsoftTeams.authentication.authenticate(teamsAuthParams);
-                // microsoftTeams.authentication.notifySuccess()
 
-                // const eventListener = (event: any) => {
-                //     if (event.origin.startsWith(this.urlHostname)) {
-                //         // window.removeEventListener('message', eventListener);
-                //         if (event.data) {
-                //             console.log(`will resolve authenticate(${JSON.stringify(event.data)})`);
-                //             // resolve(event.data);
-                //         }
-                //         else {
-                //             console.log('rejecting authenticate()');
-                //             reject();
-                //         }
-                //     }
-                // };
-    
-                // window.addEventListener('message', eventListener);
-                // console.log('event listener added');
-    
             }, [this.urlHostname]);
 
         });

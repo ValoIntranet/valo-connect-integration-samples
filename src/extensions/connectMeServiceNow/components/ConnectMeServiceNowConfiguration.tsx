@@ -1,40 +1,42 @@
 import * as React from 'react';
 import { ConnectWidgetSize } from '@valo/extensibility/lib/models/connectWidget';
 
-import { IConnectMeXeroConfig } from '../IConnectMeXeroConfig';
-import styles from './ConnectMeXeroConfiguration.module.scss';
+import { IConnectMeServiceNowConfig } from '../IConnectMeServiceNowConfig';
+import styles from './ConnectMeServiceNowConfiguration.module.scss';
 
 import { RendererContext, Provider, teamsTheme, Input, InputProps } from '@fluentui/react-northstar';
 import { createEmotionRenderer } from '@fluentui/react-northstar-emotion-renderer';
 import { SelectSizeDropDown } from '../../../components/SelectSizeDropDown';
 import { Label } from '@fluentui/react-northstar/dist/es/components/Label/Label';
 
-import * as strings from 'ConnectMeXeroApplicationCustomizerStrings';
+import * as strings from 'ConnectMeServiceNowApplicationCustomizerStrings';
 
-export function ConnectMeXeroConfiguration(props: {
-	config: IConnectMeXeroConfig;
-	onConfigurationUpdated: (config: IConnectMeXeroConfig) => void;
+export function ConnectMeServiceNowConfiguration(props: {
+	config: IConnectMeServiceNowConfig;
+	onConfigurationUpdated: (config: IConnectMeServiceNowConfig) => void;
 }) {
 
-	let initialConfig: IConnectMeXeroConfig = props.config || {
+	let initialConfig: IConnectMeServiceNowConfig = props.config || {
 		size: ConnectWidgetSize.Double,
-	} as IConnectMeXeroConfig;
+	} as IConnectMeServiceNowConfig;
 
     const [widgetSize, setWidgetSize] = React.useState(initialConfig.size);
     const [authenticationUrl, setAuthenticationUrl] = React.useState<string>(initialConfig.authenticationUrl);
-    const [xeroClientId, setXeroClientId] = React.useState<string>(initialConfig.xeroClientId);
+    const [serviceNowClientId, setServiceNowClientId] = React.useState<string>(initialConfig.serviceNowClientId);
+    const [serviceNowInstance, setServiceNowInstance] = React.useState<string>(initialConfig.serviceNowInstance);
 
     React.useEffect(() => {
         const newConfig = { 
             ...props.config,
             size: widgetSize,
             authenticationUrl: authenticationUrl,
-            xeroClientId: xeroClientId
+            serviceNowClientId: serviceNowClientId,
+            serviceNowInstance: serviceNowInstance
         };
         props.onConfigurationUpdated(newConfig);
-    }, [ widgetSize, authenticationUrl, xeroClientId ]);
+    }, [ widgetSize, authenticationUrl, serviceNowClientId, serviceNowInstance ]);
     
-    return (<div className={styles.xeroConfiguration}>
+    return (<div className={styles.serviceNowConfiguration}>
 
         <RendererContext.Provider value={createEmotionRenderer()}>
 
@@ -54,12 +56,21 @@ export function ConnectMeXeroConfiguration(props: {
                     }} />
 
 
-                <Label className={styles.configPanelFieldLabel}>{strings.XeroClientId}</Label>
+                <Label className={styles.configPanelFieldLabel}>{strings.ServiceNowInstance}</Label>
                 <Input 
                     className={styles.configPanelInputField}
-                    value={xeroClientId} 
+                    value={serviceNowInstance} 
                     onChange={(event: React.SyntheticEvent<HTMLElement, Event>, data?: InputProps & { value: string; }) => {
-                        setXeroClientId(data.value);
+                        setServiceNowInstance(data.value);
+                    }} />
+
+
+                <Label className={styles.configPanelFieldLabel}>{strings.ServiceNowClientId}</Label>
+                <Input 
+                    className={styles.configPanelInputField}
+                    value={serviceNowClientId} 
+                    onChange={(event: React.SyntheticEvent<HTMLElement, Event>, data?: InputProps & { value: string; }) => {
+                        setServiceNowClientId(data.value);
                     }} />
 
 
