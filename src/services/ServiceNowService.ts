@@ -145,7 +145,7 @@ export class ServiceNowService {
     public async getTasks(tasks: string[] = []) {
 
         const queryClauses = tasks.map(task => { return `sys_id=${task}`});
-        const tasksToReturn = await this.get(`${this.apiHostname}/now/table/task${queryClauses.length > 0 && `?sysparm_query=${queryClauses.join('^OR')}`}${queryClauses.length > 0 ? '&' : '?'}sysparm_fields=sys_id,start_time,number,sys_updated_by`);
+        const tasksToReturn = await this.get(`${this.apiHostname}/now/table/task${queryClauses.length > 0 && `?sysparm_query=${queryClauses.join('^OR')}`}${queryClauses.length > 0 ? '&' : '?'}sysparm_fields=sys_id,sys_updated_on,number,sys_updated_by,short_description`);
         return tasksToReturn.result ? tasksToReturn.result : []
 
     }

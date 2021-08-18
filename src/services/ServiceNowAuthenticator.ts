@@ -15,47 +15,45 @@ export interface IServiceNowAccessTokenResponse {
 export class ServiceNowAuthenticator {
 
     private urlHostname: string;
+    private storageKey: string;
 
     constructor(protected url: string, protected snowInstance: string, protected clientId: string, protected httpClent: HttpClient) {
         this.urlHostname = this.url.substr(0, this.url.indexOf('/', 9));
+        this.storageKey = `ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`;
     }
 
-    public getAccessToken(): Promise<string> {
+    public async getAccessTokenSilently(): Promise<string | null> {
         
-        const currentAccessToken = this.currentAccessToken();
-
-        if (currentAccessToken && currentAccessToken.accessToken) {
-            return Promise.resolve(currentAccessToken.accessToken);
+        let accessToken = this.currentAccessToken();
+        if (accessToken) {
+            return accessToken;
+        }
+        
+        const refreshToken = this.currentRefreshToken();
+        
+        if (!refreshToken) {
+            return null;
         }
 
-        return new Promise<string>((resolve, reject) => {
+        try {
+            return await this.refreshAccessToken(refreshToken);
+        }
+        catch (err) {
+            return null;
+        }
 
-            const refreshToken = this.currentRefreshToken();
-            const refreshPromise: Promise<string> = refreshToken ? this.refreshAccessToken(refreshToken) : this.authenticate();
-
-            refreshPromise.then(success => {
-
-                const snowResponse: IServiceNowAccessTokenResponse = JSON.parse(window.localStorage.getItem(`ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`));
-                resolve(snowResponse.accessToken);
-
-            }).catch(reason => {
-                window.localStorage.removeItem(`ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`);
-                reject(reason);
-            })
-
-        });
     }
 
-    public currentAccessToken(): IServiceNowAccessTokenResponse | null {
-        const accessTokenString = window.localStorage.getItem(`ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`);
+    public currentAccessToken(): string | null {
+        const accessTokenString = window.localStorage.getItem(this.storageKey);
         if (accessTokenString) {
             try {
                 const accessToken: IServiceNowAccessTokenResponse = JSON.parse(accessTokenString);
-                if (!accessToken.expiresIn || !accessToken.obtained) {
+                if (!accessToken.expiresOn) {
                     return null;
                 }
                 if (new Date(accessToken.expiresOn).getTime() > (new Date().getTime())) {
-                    return accessToken;
+                    return accessToken.accessToken;
                 }
                 return null;
             }
@@ -69,7 +67,7 @@ export class ServiceNowAuthenticator {
     }
 
     public currentRefreshToken(): string | null {
-        const accessTokenString = window.localStorage.getItem(`ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`);
+        const accessTokenString = window.localStorage.getItem(this.storageKey);
         if (accessTokenString) {
             try {
                 const accessToken: IServiceNowAccessTokenResponse = JSON.parse(accessTokenString);
@@ -92,16 +90,12 @@ export class ServiceNowAuthenticator {
                 body: `refresh_token=${refreshToken}`
             }).then(response => {
                 if (!response.ok) {
-                    window.localStorage.removeItem(`ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`);
-                    this.authenticate().then(accessToken => {
-                        resolve(accessToken);
-                    }).catch(reason => {
-                        reject(reason);
-                    });
+                    window.localStorage.removeItem(this.storageKey);
+                    reject('Failed getting refresh token');
                     return;
                 }
                 response.json().then((json: any) => {
-                    const currentToken: IServiceNowAccessTokenResponse = JSON.parse(window.localStorage.getItem(`ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`));
+                    const currentToken: IServiceNowAccessTokenResponse = JSON.parse(window.localStorage.getItem(this.storageKey));
                     if (json['access_token']) {
                         const newToken: IServiceNowAccessTokenResponse = {
                             ...currentToken,
@@ -110,13 +104,13 @@ export class ServiceNowAuthenticator {
                             expiresOn: new Date((new Date()).getTime() + (json.expires_in * 1000)).toISOString() // current time plus expiresIn value in seconds
                         }
                         
-                        window.localStorage.setItem(`ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`, JSON.stringify(newToken));
+                        window.localStorage.setItem(this.storageKey, JSON.stringify(newToken));
                         resolve(newToken.accessToken);
                     }
                 });
 
             }).catch(reason => {
-                window.localStorage.removeItem(`ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`);
+                window.localStorage.removeItem(this.storageKey);
                 reject(reason);
             });
         
@@ -124,22 +118,7 @@ export class ServiceNowAuthenticator {
 
     }
 
-    public authenticateNotExpired(): boolean {
-        try {
-            const snowResponse: IServiceNowAccessTokenResponse = JSON.parse(window.localStorage.getItem(`ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`));
-            if (!snowResponse.expiresOn) {
-                return false;
-            }
-            else {
-                return (new Date(snowResponse.expiresOn).getTime() > new Date().getTime());
-            }
-        }
-        catch {
-            return false;
-        }
-    }
-    
-    public authenticate(): Promise<string> {
+    public authenticatedAccessToken(): Promise<string> {
 
         return new Promise<string>((resolve, reject) => {
 
@@ -152,7 +131,7 @@ export class ServiceNowAuthenticator {
                     successCallback: (result: string) => {
 
                         const snowResponse: IServiceNowAccessTokenResponse = ServiceNowAuthenticator.translateSnowResponse(JSON.parse(result));
-                        window.localStorage.setItem(`ServiceNow:AccessToken:${this.snowInstance}:${this.clientId}`, JSON.stringify(snowResponse));
+                        window.localStorage.setItem(this.storageKey, JSON.stringify(snowResponse));
 
                         if (snowResponse.clientId !== this.clientId) {
                             reject(`ClientIdDoesNotMatch`);

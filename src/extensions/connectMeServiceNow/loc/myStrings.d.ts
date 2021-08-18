@@ -8,9 +8,12 @@ declare interface IConnectMeServiceNowApplicationCustomizerStrings {
   AuthenticationUrl: string;
   ServiceNowClientId: string;
   ServiceNowInstance: string;
-  SignInToViewYourPayslip: string;
   SignInToServiceNow: string;
-  ViewYourPayslip: string;
+  Options: string;
+  OpenInServiceNow: string;
+  IncidentNumber: string;
+  LastUpdate: string;
+  IncidentSummary: string;
 }
 
 declare module 'ConnectMeServiceNowApplicationCustomizerStrings' {

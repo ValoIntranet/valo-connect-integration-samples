@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Input, Loader, Provider, RendererContext, teamsTheme } from "@fluentui/react-northstar";
+import { Button, Flex, Image, Input, Loader, Provider, RendererContext, Table, teamsTheme } from "@fluentui/react-northstar";
 import { createEmotionRenderer } from "@fluentui/react-northstar-emotion-renderer";
 import * as strings from "ConnectMeServiceNowApplicationCustomizerStrings";
 import * as React from "react";
@@ -7,6 +7,7 @@ import styles from "./ConnectMeServiceNow.module.scss";
 import { IConnectMeServiceNowProps } from './IConnectMeServiceNowProps';
 import { ServiceNowAuthenticator } from "../../../services/ServiceNowAuthenticator";
 import { IServiceNowTask, ServiceNowService } from "../../../services/ServiceNowService";
+import { ServiceNowTableHelper } from "./ServiceNowTableHelper";
 
 export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeServiceNowProps>) {
 
@@ -31,23 +32,45 @@ export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeSer
     }, []);
 
     const authenticate = async () => {
-        const accessToken = await authenticator.getAccessToken();
-        setAccessToken(accessToken);
-        checkAccessToken();
+        
+        try {
+            const accessToken = await authenticator.authenticatedAccessToken();
+            if (accessToken) {
+                setAccessToken(accessToken);
+                await getSLATasks();
+            }
+        }
+        catch {
+            setShowSignInContainer(true);
+        }
+       
     }
 
-    const viewSLATasks = async () => {
+    const refreshSLATasks = async () => {
         await getSLATasks();
     }
 
     const getSLATasks = async () => {
-        if (accessToken) {
+
+        if (!authenticator) {
+            setShowSignInContainer(true);
+            return;
+        }
+
+        let workingAccessToken = await authenticator.getAccessTokenSilently();
+
+        if (!workingAccessToken) {
+            setShowSignInContainer(true);
+        }
+        else {
             
+            setAccessToken(workingAccessToken);
+            setShowSignInContainer(false);
             setServiceNowLoading(true);
             
             try {
 
-                const serviceNowService = new ServiceNowService(props.httpClient, props.widgetConfig.serviceNowInstance, accessToken);
+                const serviceNowService = new ServiceNowService(props.httpClient, props.widgetConfig.serviceNowInstance, workingAccessToken);
 
                 const tasksSLA = await serviceNowService.getTaskSLAs(true, true);
                 const obtainedTasks = tasksSLA.length > 0 ? await serviceNowService.getTasks(tasksSLA.map(taskSLA => { return taskSLA.task.value })) : [];
@@ -56,46 +79,21 @@ export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeSer
 
             }
             catch (err) {
+                setShowSignInContainer(true);
 
             }
 
             setServiceNowLoading(false);
             
-        }
-    }
-
-    const checkAccessToken = async () => {
-
-        if (authenticator) {
-
-            const accessToken = authenticator.currentAccessToken();
-            if (accessToken) {
-                setShowSignInContainer(false);
-                setAccessToken(accessToken.accessToken);
-            }
-            else {
-                setShowSignInContainer(true);
-            }
 
         }
-
     }
 
     React.useEffect(() => {
-        checkAccessToken();
+
+        getSLATasks();
+
     }, [ authenticator ]);
-
-    React.useEffect(() => {
-        if (accessToken) {
-            setShowRefreshServiceNowContainer(true);
-        }
-    }, [ accessToken ]);
-
-    React.useEffect(() => {
-        if (tasks.length > 0) {
-            setShowRefreshServiceNowContainer(false);
-        }
-    }, [ tasks ]);
 
     const serviceNowLogo: string = require('./assets/snow-logo.png');
 
@@ -103,12 +101,15 @@ export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeSer
 
         <RendererContext.Provider value={createEmotionRenderer()}>
 
-            {tasks.length > 0 && <div>{tasks.map(task => { return <div><a href={task.sys_id}>{task.number} -  {task.sys_updated_by}</a></div>} )}</div>}
-            
             <Provider theme={teamsTheme}>
 
+                {(tasks.length > 0) && 
+                    <Table 
+                        header={ServiceNowTableHelper.getHeaderColumns(props.widgetConfig.size)}
+                        rows={tasks.map(task => ServiceNowTableHelper.getTaskRow(task, props.widgetConfig.size))} /> }
+                
                 {showSignInContainer && <Flex className={styles.signInContainer} hAlign='center' column>
-                        <div className={styles.signInMessage}>{strings.SignInToViewYourPayslip}</div>
+                        <div className={styles.signInMessage}>{strings.SignInToServiceNow}</div>
                         <span className={styles.signInButton}>
                             <Button title={strings.SignInToServiceNow} 
                                 size='medium'
@@ -121,18 +122,6 @@ export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeSer
                         </span>
                     </Flex>}
 
-                {showRefreshServiceNowContainer && <Flex className={styles.refreshServiceNowContainer} hAlign='center' column>
-                        <span className={styles.refreshButton}>
-                            <Button content={strings.ViewYourPayslip} 
-                                size='medium'
-                                onClick={viewSLATasks} 
-                                icon={serviceNowLoading ? 
-                                        <Loader size='small'/>
-                                        : <Image 
-                                            src={serviceNowLogo} 
-                                            width={'24'} height={'24'} />} />
-                        </span>
-                    </Flex>}
             </Provider>
 
         </RendererContext.Provider>
