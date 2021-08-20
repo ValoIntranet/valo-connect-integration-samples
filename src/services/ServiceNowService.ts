@@ -12,13 +12,13 @@ export interface IServiceNowTask {
     opened_by: {
         link: string;
         value: string;
-    },
+    };
     user_input: string;
     sys_created_on: string;
     sys_domain: {
         link: string;
         value: string;
-    },
+    };
     state: number;
     route_reason: string;
     sys_created_by: string;
@@ -28,7 +28,7 @@ export interface IServiceNowTask {
     cmdb_ci: {
         link: string;
         value: string;
-    },
+    };
     delivery_plan: string;
     contract: string;
     impact: number;
@@ -68,7 +68,7 @@ export interface IServiceNowTask {
     assigned_to: {
         link: string;
         value: string;
-    },
+    };
     comments: string;
     approval: string;
     sla_due: string;
@@ -104,7 +104,7 @@ export interface IServiceNowTaskSLA {
     sla: {
         link: string;
         value: string;
-    },
+    };
     sys_tags: string;
     schedule: string;
     start_time: string;
@@ -112,13 +112,13 @@ export interface IServiceNowTaskSLA {
     task: {
         link: string;
         value: string;
-    },
+    };
     stage: string;
     planned_end_time: string;
     has_breached: string;
 }
 
-import { HttpClient, HttpClientResponse } from '@microsoft/sp-http';
+import { HttpClient } from '@microsoft/sp-http';
 
 const API_HOSTNAME: string = "https://{serviceNowInstanceId}.service-now.com/api";
 
@@ -133,8 +133,8 @@ export class ServiceNowService {
     public async getTaskSLAs(onlyBreached: boolean, onlyActive: boolean): Promise<IServiceNowTaskSLA[]> {
         
         let query = `${onlyBreached && `has_breached=true`}`;
-        onlyActive && (query += `${(query.length > 0) && '^'}active=true`);
-        query += `${(query.length > 0) && '^'}ORDRERBYDESCstart_time`
+        if (onlyActive) { query += `${(query.length > 0) && '^'}active=true`; }
+        query += `${(query.length > 0) && '^'}ORDRERBYDESCstart_time`;
         
 
         const tasks = await this.get(`${this.apiHostname}/now/table/task_sla${query.length > 0 && `?sysparm_query=${query}`}${query.length > 0 ? '&' : '?'}sysparm_fields=task,start_time`);
@@ -144,9 +144,9 @@ export class ServiceNowService {
 
     public async getTasks(tasks: string[] = []) {
 
-        const queryClauses = tasks.map(task => { return `sys_id=${task}`});
+        const queryClauses = tasks.map(task => { return `sys_id=${task}`; });
         const tasksToReturn = await this.get(`${this.apiHostname}/now/table/task${queryClauses.length > 0 && `?sysparm_query=${queryClauses.join('^OR')}`}${queryClauses.length > 0 ? '&' : '?'}sysparm_fields=sys_id,sys_updated_on,number,sys_updated_by,short_description`);
-        return tasksToReturn.result ? tasksToReturn.result : []
+        return tasksToReturn.result ? tasksToReturn.result : [];
 
     }
 
@@ -210,7 +210,7 @@ export class ServiceNowService {
     }
 
     protected getCurrentHeaders() {
-        const headers = {}
+        const headers = {};
         if (this.accessToken) headers["Authorization"] = `Bearer ${this.accessToken}`; 
         headers["Accept"] = `application/json`;
         return headers;

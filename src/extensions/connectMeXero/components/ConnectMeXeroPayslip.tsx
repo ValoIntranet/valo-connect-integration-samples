@@ -12,28 +12,28 @@ export function ConnectMeXeroPayslip(props: React.PropsWithChildren<{ payslip: a
         </div>
         <div className={`${styles.xeroEarningsDeductions} ${styles.xeroPayslipSection}`}>
             { props.payslip.Payslip.EarningsLines.map(line => {
-                return <ConnectMeXeroLineItem label={'Earning'} description={`Rate: ${line.RatePerUnit}`} value={line.NumberOfUnits} />
+                return <ConnectMeXeroLineItem label={'Earning'} description={`Rate: ${line.RatePerUnit}`} value={line.NumberOfUnits} />;
             })}
             { props.payslip.Payslip.DeductionLines.map(line => {
-                return <ConnectMeXeroLineItem label={'Deduction'} description={line.CalculationType} value={line.Amount} valueFormat={'currency'} />
+                return <ConnectMeXeroLineItem label={'Deduction'} description={line.CalculationType} value={line.Amount} valueFormat={'currency'} />;
             })}
             { props.payslip.Payslip.LeaveEarningsLines.map(line => {
-                return <ConnectMeXeroLineItem label={'Leave earning'} description={`Rate: ${line.RatePerUnit}`} value={line.NumberOfUnits} valueFormat={'currency'} />
+                return <ConnectMeXeroLineItem label={'Leave earning'} description={`Rate: ${line.RatePerUnit}`} value={line.NumberOfUnits} valueFormat={'currency'} />;
             })}
         </div>
         <div className={`${styles.xeroLeaveAccruals} ${styles.xeroPayslipSection}`}>
             { props.payslip.Payslip.LeaveAccrualLines.map(line => {
-                return <ConnectMeXeroLineItem label={'Leave accural'} description={``} value={line.NumberOfUnits} />
+                return <ConnectMeXeroLineItem label={'Leave accural'} description={``} value={line.NumberOfUnits} />;
             })}
         </div>
         <div className={`${styles.xeroSuperannuation} ${styles.xeroPayslipSection}`}>
             { props.payslip.Payslip.SuperannuationLines.map(line => {
-                return <ConnectMeXeroLineItem label={'Superannuation'} description={line.Percentage && `Calculated: ${line.Percentage}%`} value={line.Amount} valueFormat={'currency'} />
+                return <ConnectMeXeroLineItem label={'Superannuation'} description={line.Percentage && `Calculated: ${line.Percentage}%`} value={line.Amount} valueFormat={'currency'} />;
             })}
         </div>
         <div className={`${styles.xeroTaxation} ${styles.xeroPayslipSection}`}>
             { props.payslip.Payslip.TaxLines.map(line => {
-                return <ConnectMeXeroLineItem label={'Taxation'} description={line.TaxTypeName} value={line.Amount} valueFormat={'currency'} />
+                return <ConnectMeXeroLineItem label={'Taxation'} description={line.TaxTypeName} value={line.Amount} valueFormat={'currency'} />;
             })}
         </div>
     </div>);

@@ -1,6 +1,6 @@
 define([], function() {
   return {
-    ConnectMeServiceNowWidgetTitle: "ServiceNow incidents breached SLA",
+    ConnectMeServiceNowWidgetTitle: "Incidents breached SLA",
     ConnectMeServiceNowWidgetDescription: "The ServiceNow widget allows you to view data from ServiceNow",
     WidgetSizeSingleColumn: "One column",
     WidgetSizeTwoColumns: "Two columns",

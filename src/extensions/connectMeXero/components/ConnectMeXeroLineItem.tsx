@@ -24,6 +24,6 @@ export function ConnectMeXeroLineItem(props: React.PropsWithChildren<{label: str
             {props.description && props.description.length > 0 && <Text content={props.description} />}
             <Text content={props.value} />
         </Flex>
-    </div>
+    </div>;
 
 }

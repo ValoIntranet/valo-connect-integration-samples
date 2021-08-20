@@ -94,7 +94,7 @@ export class XeroService {
     }
 
     protected getCurrentHeaders() {
-        const headers = {}
+        const headers = {};
         if (this.accessToken) headers["Authorization"] = `Bearer ${this.accessToken}`; 
         if (this.xeroTenantId) headers["Xero-tenant-id"] = `${this.xeroTenantId}`;
         headers["Accept"] = `application/json`;

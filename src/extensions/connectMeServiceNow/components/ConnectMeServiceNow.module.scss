@@ -30,14 +30,8 @@
         }
 
     }
-    .signInButton {
-        :global(.ui-button) {
-            padding: 0;
-        }
-    }
-
-    &.payslipNotBlurred {
-        overflow-y: scroll;
+    .serviceNowFullLogo {
+        padding-left: 0.5rem;
     }
 
 }

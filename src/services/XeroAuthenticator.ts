@@ -93,7 +93,7 @@ export class XeroAuthenticator {
             }).catch(reason => {
                 window.sessionStorage.removeItem(`Xero:AuthCode:${this.clientId}`);
                 reject(reason);
-            })
+            });
 
         });
     }
@@ -161,7 +161,7 @@ export class XeroAuthenticator {
                         console.log(`failureCallback(${reason})`);
                         reject(reason);
                     }
-                }
+                };
 
                 microsoftTeams.authentication.authenticate(teamsAuthParams);
 
@@ -169,6 +169,12 @@ export class XeroAuthenticator {
 
         });
 
+    }
+
+    public async signout(): Promise<boolean> {
+        window.sessionStorage.removeItem(`Xero:AuthCode:${this.clientId}`);
+        window.sessionStorage.removeItem(`Xero:AccessToken:${this.clientId}`);
+        return true;
     }
 
 }

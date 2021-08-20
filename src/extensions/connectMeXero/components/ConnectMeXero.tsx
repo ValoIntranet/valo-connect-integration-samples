@@ -1,10 +1,9 @@
-import { Button, Flex, Image, Input, Loader, Provider, RendererContext, teamsTheme } from "@fluentui/react-northstar";
+import { Alert, Button, Flex, Image, Input, Loader, Provider, RendererContext, teamsTheme } from "@fluentui/react-northstar";
 import { createEmotionRenderer } from "@fluentui/react-northstar-emotion-renderer";
 import * as strings from "ConnectMeXeroApplicationCustomizerStrings";
 import * as React from "react";
 import styles from "./ConnectMeXero.module.scss";
 import { ConnectMeXeroPayslip } from "./ConnectMeXeroPayslip";
-import dummyPayslip from "./DummyPayslip";
 
 import { IConnectMeXeroProps } from './IConnectMeXeroProps';
 import { XeroAuthenticator } from "../../../services/XeroAuthenticator";
@@ -21,6 +20,7 @@ export function ConnectMeXero(props: React.PropsWithChildren<IConnectMeXeroProps
     const [ payrunId, setPayrunId ] = React.useState<string>();
     const [ payslipId, setPayslipId ] = React.useState<string>();
     const [ payslip, setPayslip ] = React.useState<any>();
+    const [ error, setError ] = React.useState<string | null>(null);
     const [ blurPayslip, setBlurPayslip ] = React.useState<boolean>(true);
     const [ xeroLoading, setXeroLoading ] = React.useState<boolean>(false);
 
@@ -35,17 +35,25 @@ export function ConnectMeXero(props: React.PropsWithChildren<IConnectMeXeroProps
 
     }, []);
 
-    const authenticate = async () => {
-        const accessToken = await authenticator.getAccessToken();
-        setAccessToken(accessToken);
-        checkAccessToken();
-    }
+    const checkAccessToken = async () => {
 
-    const viewPayslip = async () => {
-        await getLatestPayslip();
-    }
+        if (authenticator) {
+
+            const currentAccessToken = authenticator.currentAccessToken();
+            if (accessToken) {
+                setShowSignInContainer(false);
+                setAccessToken(currentAccessToken.accessToken);
+            }
+            else {
+                setShowSignInContainer(true);
+            }
+
+        }
+
+    };
 
     const getLatestPayslip = async () => {
+
         if (accessToken) {
             
             setXeroLoading(true);
@@ -62,6 +70,9 @@ export function ConnectMeXero(props: React.PropsWithChildren<IConnectMeXeroProps
                     setTenantId(tenants[0].tenantId);
                     runTenantId = tenants[0].tenantId;
                     xeroService.setXeroTenantId(runTenantId);
+                }
+                else {
+                    setError(strings.NoXeroConnectionsFound);
                 }
 
                 if (runTenantId) {
@@ -95,24 +106,17 @@ export function ConnectMeXero(props: React.PropsWithChildren<IConnectMeXeroProps
             setXeroLoading(false);
             
         }
-    }
+    };
 
-    const checkAccessToken = async () => {
+    const authenticate = async () => {
+        const accessTokenFromAuthenticator = await authenticator.getAccessToken();
+        setAccessToken(accessTokenFromAuthenticator);
+        checkAccessToken();
+    };
 
-        if (authenticator) {
-
-            const accessToken = authenticator.currentAccessToken();
-            if (accessToken) {
-                setShowSignInContainer(false);
-                setAccessToken(accessToken.accessToken);
-            }
-            else {
-                setShowSignInContainer(true);
-            }
-
-        }
-
-    }
+    const viewPayslip = async () => {
+        await getLatestPayslip();
+    };
 
     React.useEffect(() => {
         checkAccessToken();
@@ -144,6 +148,8 @@ export function ConnectMeXero(props: React.PropsWithChildren<IConnectMeXeroProps
         <RendererContext.Provider value={createEmotionRenderer()}>
 
             <Provider theme={teamsTheme}>
+
+                {error && <Alert warning content={error} />}
 
                 {payslip && <ConnectMeXeroPayslip payslip={payslip} blur={blurPayslip} /> }
 

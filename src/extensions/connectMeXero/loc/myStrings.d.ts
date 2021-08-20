@@ -10,6 +10,9 @@ declare interface IConnectMeXeroApplicationCustomizerStrings {
   SignInToViewYourPayslip: string;
   SignInToXero: string;
   ViewYourPayslip: string;
+  RefreshPaylsip: string;
+  SignOutFromXero: string;
+  NoXeroConnectionsFound: string;
 }
 
 declare module 'ConnectMeXeroApplicationCustomizerStrings' {

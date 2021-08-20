@@ -102,7 +102,7 @@ export class ServiceNowAuthenticator {
                             accessToken: json.access_token,
                             expiresIn: json.expires_in,
                             expiresOn: new Date((new Date()).getTime() + (json.expires_in * 1000)).toISOString() // current time plus expiresIn value in seconds
-                        }
+                        };
                         
                         window.localStorage.setItem(this.storageKey, JSON.stringify(newToken));
                         resolve(newToken.accessToken);
@@ -143,7 +143,7 @@ export class ServiceNowAuthenticator {
                         console.log(`failureCallback(${reason})`);
                         reject(reason);
                     }
-                }
+                };
 
                 microsoftTeams.authentication.authenticate(teamsAuthParams);
     
@@ -161,7 +161,7 @@ export class ServiceNowAuthenticator {
             tokenType: rawObject.token_type,
             expiresIn: rawObject.expires_in,
             expiresOn: new Date((new Date()).getTime() + (rawObject.expires_in * 1000)).toISOString() // current time plus expiresIn value in seconds
-        }
+        };
     }
 
 }

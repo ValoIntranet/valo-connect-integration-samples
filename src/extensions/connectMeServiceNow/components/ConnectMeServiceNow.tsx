@@ -8,14 +8,13 @@ import { IConnectMeServiceNowProps } from './IConnectMeServiceNowProps';
 import { ServiceNowAuthenticator } from "../../../services/ServiceNowAuthenticator";
 import { IServiceNowTask, ServiceNowService } from "../../../services/ServiceNowService";
 import { ServiceNowTableHelper } from "./ServiceNowTableHelper";
+import * as teamsjs from "@microsoft/teams-js";
 
 export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeServiceNowProps>) {
 
     const containerRef = React.useRef<HTMLDivElement>();
     const [ authenticator, setAuthenticator] = React.useState<ServiceNowAuthenticator>();
-    const [ accessToken, setAccessToken ] = React.useState<string>();
     const [ showSignInContainer, setShowSignInContainer ] = React.useState<boolean>(false);
-    const [ showRefreshServiceNowContainer, setShowRefreshServiceNowContainer ] = React.useState<boolean>(false);
     const [ tasks, setTasks ] = React.useState<IServiceNowTask[]>([]);
     const [ serviceNowLoading, setServiceNowLoading ] = React.useState<boolean>(false);
 
@@ -29,26 +28,9 @@ export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeSer
                 props.httpClient));
         }
 
+        teamsjs.initialize();
+
     }, []);
-
-    const authenticate = async () => {
-        
-        try {
-            const accessToken = await authenticator.authenticatedAccessToken();
-            if (accessToken) {
-                setAccessToken(accessToken);
-                await getSLATasks();
-            }
-        }
-        catch {
-            setShowSignInContainer(true);
-        }
-       
-    }
-
-    const refreshSLATasks = async () => {
-        await getSLATasks();
-    }
 
     const getSLATasks = async () => {
 
@@ -64,7 +46,6 @@ export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeSer
         }
         else {
             
-            setAccessToken(workingAccessToken);
             setShowSignInContainer(false);
             setServiceNowLoading(true);
             
@@ -73,7 +54,7 @@ export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeSer
                 const serviceNowService = new ServiceNowService(props.httpClient, props.widgetConfig.serviceNowInstance, workingAccessToken);
 
                 const tasksSLA = await serviceNowService.getTaskSLAs(true, true);
-                const obtainedTasks = tasksSLA.length > 0 ? await serviceNowService.getTasks(tasksSLA.map(taskSLA => { return taskSLA.task.value })) : [];
+                const obtainedTasks = tasksSLA.length > 0 ? await serviceNowService.getTasks(tasksSLA.map(taskSLA => { return taskSLA.task.value; })) : [];
 
                 setTasks(obtainedTasks);
 
@@ -84,10 +65,28 @@ export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeSer
             }
 
             setServiceNowLoading(false);
-            
 
         }
-    }
+
+    };
+
+    const authenticate = async () => {
+        
+        try {
+            const accessToken = await authenticator.authenticatedAccessToken();
+            if (accessToken) {
+                await getSLATasks();
+            }
+        }
+        catch {
+            setShowSignInContainer(true);
+        }
+       
+    };
+
+    const refreshSLATasks = async () => {
+        await getSLATasks();
+    };
 
     React.useEffect(() => {
 
@@ -96,6 +95,7 @@ export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeSer
     }, [ authenticator ]);
 
     const serviceNowLogo: string = require('./assets/snow-logo.png');
+    const serviceNowFullLogo: string = require('./assets/snow-logo-full.png');
 
     return (<div className={`${styles.serviceNow}`} ref={containerRef}>
 
@@ -103,15 +103,22 @@ export function ConnectMeServiceNow(props: React.PropsWithChildren<IConnectMeSer
 
             <Provider theme={teamsTheme}>
 
+                {!showSignInContainer &&
+                    <Image 
+                        className={styles.serviceNowFullLogo}
+                        src={serviceNowFullLogo} 
+                        width={'150'} height={'24'} />}
+                
                 {(tasks.length > 0) && 
                     <Table 
                         header={ServiceNowTableHelper.getHeaderColumns(props.widgetConfig.size)}
-                        rows={tasks.map(task => ServiceNowTableHelper.getTaskRow(task, props.widgetConfig.size))} /> }
+                        rows={tasks.map(task => ServiceNowTableHelper.getTaskRow(task, teamsjs, props.widgetConfig.serviceNowInstance, props.widgetConfig.size))} /> }
                 
+                {serviceNowLoading && <Loader size="medium" />}
                 {showSignInContainer && <Flex className={styles.signInContainer} hAlign='center' column>
-                        <div className={styles.signInMessage}>{strings.SignInToServiceNow}</div>
                         <span className={styles.signInButton}>
                             <Button title={strings.SignInToServiceNow} 
+                                content={strings.SignInToServiceNow}
                                 size='medium'
                                 onClick={authenticate} 
                                 icon={serviceNowLoading ? 
