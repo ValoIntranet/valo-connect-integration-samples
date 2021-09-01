@@ -1,7 +1,7 @@
 import * as React from "react";
 import styles from "./ServiceNowTableHelper.module.scss";
 import { ConnectWidgetSize } from "@valo/extensibility/lib/models/connectWidget/ConnectWidgetInfo";
-import { Button, ShorthandValue, BoxProps, MenuButton, MoreIcon, Image } from "@fluentui/react-northstar";
+import { Button, ShorthandValue, BoxProps, MenuButton, MoreIcon, Image, ClipboardCopiedToIcon } from "@fluentui/react-northstar";
 import * as moment from "moment";
 import * as strings from "ConnectMeServiceNowApplicationCustomizerStrings";
 import { IServiceNowTask } from "../../../services/ServiceNowService";
@@ -12,7 +12,22 @@ export class ServiceNowTableHelper {
 		return widgetSize === ConnectWidgetSize.Double || widgetSize === ConnectWidgetSize.Triple || widgetSize === ConnectWidgetSize.Box;
 	}
 
-    public static getHeaderColumns = (widgetSize: ConnectWidgetSize) => {
+    public static copyToClipboard(data: string): void {
+        const textarea = document.createElement('textarea');
+		textarea.style.position = 'fixed';
+		textarea.style.top = '0';
+		// textarea.style.visibility = 'hidden';
+        textarea.textContent = `${data}`;
+        document.body.appendChild(textarea);
+
+        textarea.focus();
+        textarea.select();
+
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    }
+	
+	public static getHeaderColumns = (widgetSize: ConnectWidgetSize) => {
 		let result: {
 			className?: string;
 			content: any;
@@ -84,11 +99,18 @@ export class ServiceNowTableHelper {
                         title={strings.Options}
                     />
                 }
-                menu={[{ 
-                    icon: <Image src={require('./assets/snow-logo.png')} width={24} height={24}/>,
-                    content: strings.OpenInServiceNow,
-                    onClick: () => { teamsjs.executeDeepLink(`https://${serviceNowInstance}.service-now.com/nav_to.do?uri=incident.do?sys_id=${task.sys_id}`); }
-                }]}
+                menu={[
+					{
+						icon: <Image src={require('./assets/snow-logo.png')} width={24} height={24}/>,
+						content: strings.OpenInServiceNow,
+						onClick: () => { teamsjs.executeDeepLink(`https://${serviceNowInstance}.service-now.com/nav_to.do?uri=incident.do?sys_id=${task.sys_id}`); }
+                	},
+					{
+						icon: <ClipboardCopiedToIcon outline />,
+						content: strings.CopyIncidentNumberToClipboard,
+						onClick: () => { ServiceNowTableHelper.copyToClipboard(task.number); }
+                	},
+				]}
                 positionFixed={true}
                 on="click"
             />),

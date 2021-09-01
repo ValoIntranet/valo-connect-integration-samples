@@ -1,4 +1,4 @@
-# valo-connect-me-xero
+# valo-connect-integration-samples
 
 ## Summary
 

@@ -56,6 +56,7 @@ export function ConnectMeXero(props: React.PropsWithChildren<IConnectMeXeroProps
 
         if (accessToken) {
             
+            setShowSignInContainer(false);
             setXeroLoading(true);
             
             try {
@@ -124,7 +125,11 @@ export function ConnectMeXero(props: React.PropsWithChildren<IConnectMeXeroProps
 
     React.useEffect(() => {
         if (accessToken) {
+            setShowSignInContainer(false);
             setShowRefreshXeroContainer(true);
+        }
+        else {
+            setShowSignInContainer(true);
         }
     }, [ accessToken ]);
 

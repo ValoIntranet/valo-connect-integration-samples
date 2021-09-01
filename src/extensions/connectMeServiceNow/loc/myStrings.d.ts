@@ -11,6 +11,7 @@ declare interface IConnectMeServiceNowApplicationCustomizerStrings {
   SignInToServiceNow: string;
   Options: string;
   OpenInServiceNow: string;
+  CopyIncidentNumberToClipboard: string;
   IncidentNumber: string;
   LastUpdate: string;
   IncidentSummary: string;

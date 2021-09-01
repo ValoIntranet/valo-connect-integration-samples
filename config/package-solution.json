@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "valo-connect-me-xero-client-side-solution",
+    "name": "valo-connect-integration-samples-client-side-solution",
     "id": "1fa75a0b-5bc6-4da1-b46d-de377c2c4477",
     "version": "1.0.0.0",
     "includeClientSideAssets": true,
@@ -30,6 +30,6 @@
     ]
   },
   "paths": {
-    "zippedPackage": "solution/valo-connect-me-xero.sppkg"
+    "zippedPackage": "solution/valo-connect-integration-samples.sppkg"
   }
 }

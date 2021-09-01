@@ -14,6 +14,7 @@ define([], function() {
     IncidentNumber: "Incident number",
     LastUpdate: "Last update",
     SignInToServiceNow: "Sign in to ServiceNow",
-    IncidentSummary: "Incident summary"
+    IncidentSummary: "Incident summary",
+    CopyIncidentNumberToClipboard: "Copy to clipboard"
   }
 });
