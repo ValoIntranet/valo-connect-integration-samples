@@ -7,7 +7,7 @@ This solution is an example for the [Valo Connect] widgets extensibility framewo
 * ServiceNow - View Incidents breached SLA inside Microsoft Teams
 * Xero - Open your payslip inside Microsoft Teams
 
-Combined with the sample [valo-connect-integration-proxy](https://github.com/ValoIntranet/valo-connect-integration-proxy) sample Azure Function solution, customers and partners can reference the approach outlined in these solutions to build a custom widget that integrates with third-party software applications with OAUTH2 capable authentication platforms, and presents data from the third-party applications in to the Connect Me / Microsoft Teams personal dashboard.
+Combined with the sample [valo-connect-integration-proxy](https://github.com/ValoIntranet/valo-connect-integration-proxy) Azure Function solution, customers and partners can reference the approach outlined in these solutions to build a custom widget that integrates with third-party software applications with OAUTH2 capable authentication platforms, and presents data from the third-party applications in to the Connect Me / Microsoft Teams personal dashboard.
 
 ![Screen shot of the Connect Me ServiceNow widget inside Microsoft Teams](./msteams-connect-me-service-now.png)
 
@@ -25,7 +25,7 @@ Combined with the sample [valo-connect-integration-proxy](https://github.com/Val
 ## Prerequisites
 
 * This solution runs in a [Microsoft Teams](https://teams.microsoft.com) environment, part of the Microsoft 365 platform
-* The solution an extension installed on top of [Valo Connect](https://www.valosolutions.com/valo-connect). The Microsoft Teams environment must already have Valo Connect installed for this extension to work
+* The solution an extension deployed on top of [Valo Connect](https://www.valosolutions.com/valo-connect). The Microsoft Teams environment must already have Valo Connect installed for this extension to work
 * Valo partners can access more information on the deployment steps of [Valo Connect extension packages here](https://docs.valosolutions.com/connect/extend/widgets/deploy/)
 
 
@@ -62,7 +62,7 @@ Version|Date|Comments
 
 ## Features
 
-Two widgets are made available to users of Valo Connect and Connect Me when this solution is installed. Each widget implements the steps needed to authenticate to the respective third-party applications - ServiceNow, and Xero. 
+Two widgets are made available to users of Valo Connect and Connect Me when this solution is deployed. Each widget implements the steps needed to authenticate to the respective third-party applications - ServiceNow, and Xero. 
 
 This extension illustrates the following concepts:
 
