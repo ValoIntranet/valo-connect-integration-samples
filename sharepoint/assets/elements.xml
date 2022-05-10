@@ -12,4 +12,10 @@
         ClientSideComponentId="67ec18d3-359f-4448-862a-1982292216ca"
         ClientSideComponentProperties="{}">
     </CustomAction>
+    <CustomAction
+        Title="ConnectMeZendesk"
+        Location="ClientSideExtension.ApplicationCustomizer"
+        ClientSideComponentId="ee61e383-59dd-4e0c-ab95-3c9c100c4ac2"
+        ClientSideComponentProperties="{}">
+    </CustomAction>
 </Elements>

@@ -1,0 +1,29 @@
+.numberColumn {
+    max-width: 120px;
+}
+
+.shortDescriptionColumn {
+    max-width: 260px;
+    :global(.ui-table__cell__content) {
+        text-overflow: ellipsis;
+        height: 1rem;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    
+}
+
+.lastUpdateColumn {
+    max-width: 160px;
+}
+
+.optionsColumn {
+    max-width: 40px;
+}
+
+.uiButton {
+    &:hover {
+        color: "[theme: black]";
+        font-size: 16px;
+    }
+}

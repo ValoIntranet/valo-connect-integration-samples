@@ -6,6 +6,7 @@ This solution is an example for the [Valo Connect] widgets extensibility framewo
 
 * ServiceNow - View Incidents breached SLA inside Microsoft Teams
 * Xero - Open your payslip inside Microsoft Teams
+* Zendesk - View assigned zendesk tickets in Microsoft Teams
 
 Combined with the sample [valo-connect-integration-proxy](https://github.com/ValoIntranet/valo-connect-integration-proxy) Azure Function solution, customers and partners can reference the approach outlined in these solutions to build a custom widget that integrates with third-party software applications with OAUTH2 capable authentication platforms, and presents data from the third-party applications in to the Connect Me / Microsoft Teams personal dashboard.
 
@@ -35,11 +36,13 @@ Solution|Author(s)|Contact
 --------|---------|-------
 ./src/extensions/connectMeServiceNow | Mark Powney, Product Owner at Valo Solutions (a Staffbase company)|Twitter: [@mpowney](https://twitter.com/mpowney)
 ./src/extensions/connectMeXero | Mark Powney, Product Owner at Valo Solutions (a Staffbase company)|Twitter: [@mpowney](https://twitter.com/mpowney)
+./src/extensions/connectMeZendesk | Mark Powney, Product Owner at Valo Solutions (a Staffbase company)|Twitter: [@mpowney](https://twitter.com/mpowney)
 
 ## Version history
 
 Version|Date|Comments
 -------|----|--------
+1.0.3|May 9, 2022|Added Zendesk extension sample widget
 1.0.2|March 11, 2022|Updated README with descriptive information about this solution
 1.0.1|August 17, 2021|Added Xero and ServiceNow extension widgets as samples
 1.0.0|August 4, 2021|Initial release
@@ -69,6 +72,7 @@ This extension illustrates the following concepts:
 - obtaining an authentication token from:
   - ServiceNow authentication platform
   - Xero authentication platform
+  - Zendesk authentication platform
 - managing authentication tokens in Microsoft Teams, e.g. long-life refresh tokens from ServiceNow, and silently refreshing access tokens
 - integrating Microsoft Teams with a custom Azure Function app to make an auth token available inside Microsoft Teams
 

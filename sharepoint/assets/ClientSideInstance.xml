@@ -12,4 +12,10 @@
         ComponentId="67ec18d3-359f-4448-862a-1982292216ca"
         Properties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
     </ClientSideComponentInstance>
+    <ClientSideComponentInstance
+        Title="ConnectMeZendesk"
+        Location="ClientSideExtension.ApplicationCustomizer"
+        ComponentId="ee61e383-59dd-4e0c-ab95-3c9c100c4ac2"
+        Properties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
+    </ClientSideComponentInstance>
 </Elements>
