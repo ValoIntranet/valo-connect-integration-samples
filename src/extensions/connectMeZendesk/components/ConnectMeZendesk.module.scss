@@ -1,0 +1,34 @@
+.zendesk {
+    .signInContainer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding-bottom: 4rem;
+    }
+
+    .signInButton {
+        background: "[theme: white]";
+        margin-right: 2rem;
+
+        :global(.ui-button) {
+            height: 2.6rem;
+        }
+
+        :global(.ui-button__content) {
+            color: "[theme: black]";
+        }
+
+    }
+}
+
+:global(.valo-theme-dark) {
+    .zendesk {
+        .signInButton{
+            background: "[theme: themeLight]";
+        }
+    }
+}
+
+:global(li.zendeskSignInAction) {
+    display: var(--ZendeskActionsDisplay) !important;
+}

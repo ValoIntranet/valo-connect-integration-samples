@@ -11,6 +11,10 @@
         {
           "entrypoint": "./lib/extensions/connectMeServiceNow/ConnectMeServiceNowApplicationCustomizer.js",
           "manifest": "./src/extensions/connectMeServiceNow/ConnectMeServiceNowApplicationCustomizer.manifest.json"
+        },
+        {
+          "entrypoint": "./lib/extensions/connectMeZendesk/ConnectMeZendeskApplicationCustomizer.js",
+          "manifest": "./src/extensions/connectMeZendesk/ConnectMeZendeskApplicationCustomizer.manifest.json"
         }
       ]
     }
@@ -18,6 +22,7 @@
   "externals": {},
   "localizedResources": {
     "ConnectMeXeroApplicationCustomizerStrings": "lib/extensions/connectMeXero/loc/{locale}.js",
-    "ConnectMeServiceNowApplicationCustomizerStrings": "lib/extensions/connectMeServiceNow/loc/{locale}.js"
+    "ConnectMeServiceNowApplicationCustomizerStrings": "lib/extensions/connectMeServiceNow/loc/{locale}.js",
+    "ConnectMeZendeskApplicationCustomizerStrings": "lib/extensions/connectMeZendesk/loc/{locale}.js"
   }
 }
